@@ -1,0 +1,101 @@
+1.src下
+hibernate-cfg.xml文件配置hibernate
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- 配置数据库相关库的相关信息 -->
+		<property name="connection.username">root</property>
+		<property name="connection.password">1262</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<!-- 最后一项为数据库名 -->
+		<property name="connection.url">jdbc:mysql://localhost:3306/db_hibernate</property> 
+		<!-- 配置hibernate的基本信息 -->
+		<!-- hibernate所使用的数据库方言 -->
+		<property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+		
+		<!-- 执行操作时,是否在控制台打印sql -->
+		<property name="show_sql">true</property>
+		<!-- 是否对sql进行格式化 -->
+		<property name="format_sql">true</property>
+		<!-- 指定程序运行时生成数据表的策略 -->
+		<property name="hbm2ddl.auto">update</property>		   
+		 <!-- 指定关联的.hbm.xml文件 ,可有多个-->   
+		 <mapping resource="com/zc/helloworld/News.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>
+
+2.News.hbm.xml文件
+<hibernate-mapping package="com.zc.helloworld">
+    <class name="News" table="NEWS" dynamic-insert="true">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <!-- 指定主键的生成方式, native: 使用数据库本地方式 -->
+            <generator class="native" />
+        </id>
+        <property name="title" not-null="true" unique="true"
+        	index="news_index" length="50"
+        	type="java.lang.String" column="TITLE" >
+        </property>
+		...		
+    </class>
+</hibernate-mapping>
+
+3.HibernateTest.java
+4.HibernateTest2.java
+两个都是第一个hibernate程序,保存一个对象到数据库
+
+5.Configuration类
+管理hibernate的配置信息:数据库的url,用户名,密码,jdbc驱动类,数据库dialect,数据库连接池..
+持久化类与映射文件(.hbm.xml)
+创建Configuration类的对象(.hbm.xml方式)
+Configuration config=new Configuration().configure();
+
+6.SessionFactory接口
+针对单个数据库映射关系经过编译后的内存镜像,线程安全
+
+7.Hibernate新增一个ServiceRegistry
+
+8.Session接口!!!
+是应用程序与数据库之间交互操作的一个	单线程对象.对持久化对象的所有操作必须在session管理下才可以进行持久化操作
+Session对象有一个一级缓存(相当于jdbc中的connection,包装了connection)
+保存,更新,删除和加载java对象
+hibernate站在持久化角度分为4种状态:
+
+
+session的方法
+获取持久化对象的方法
+
+9.Transaction:事务
+代表一次原子操作
+Transaction tx=
+!!!如果不开启事务,是无法完成insert等操作
+
+10.hibernate.cfg.xml中
+<!-- 指定程序运行时生成数据表的策略 -->
+<property name="hbm2ddl.auto">update</property>
+create:每次操作创建一个新表
+create-drop:每次操作完删除该表
+update:如果表内容在操作后不会发生改变,不操作.会发生改变,则添加数据
+validate:若.hbm.xml文件中的列和数据库表不一致,抛出异常		   
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
